@@ -12,7 +12,7 @@ Game Rules:
 //with your variable declarations
 let min = 1,
     max = 10,
-    winningNum = Math.ceil((Math.random() * 10)),
+    winningNum = Math.floor(Math.random()*(max-min+1)+min),
     guessesLeft = 3;
 
 //UI Elements
@@ -26,6 +26,15 @@ const game = document.getElementById('game'),
 //Assign UI Min and Max Values based on the values stored here
 minNum.textContent = min;
 maxNum.textContent = max;
+
+//Play Again Event Listener --> Since this play again button is gonna be dynamically generated during the middle of execution, we'd have no way to specify this event in advance, so we have to do event delegation from a parent component because at the time of us defining the click handler such a button doesn't exist
+//Click event won't work because it happens so fast that the submit button you clicked previously will still take effect and it will click play again without us realizing.
+//So we use mousedown event.
+game.addEventListener('mousedown', (event) => {
+    if (event.target.className.includes('play-again')) {
+        window.location.reload();
+    }
+});
 
 //Set Message Function which actually sets the message to show on the UI message element
 const setMessage = (message, color) => {
@@ -50,6 +59,12 @@ const gameOver = (didWin, message) => {
 
     //Set Message
     setMessage(message, guessInput.style.borderColor);
+
+    //Play Again
+    guessBtn.value = 'Play Again ?';
+
+    //We'll add another class to the button so that we can uniquely identify it and then add a click handler on the same.
+    guessBtn.className += ' play-again';
 };
 
 //Listen for Guess
