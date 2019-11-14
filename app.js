@@ -35,7 +35,21 @@ const setMessage = (message, color) => {
     setTimeout(() => {
         messageUI.textContent = '';
         messageUI.style.color = 'black';
+        guessInput.style.borderColor = 'black';
+        guessInput.style.backgroundColor = 'white';
     }, 3000);
+};
+
+const gameOver = (didWin, message) => {
+    //Disable Input
+    guessInput.disabled = true;
+
+    //Set color based on win condition
+    guessInput.style.borderColor = (didWin) ? 'green' : 'red';
+    guessInput.style.backgroundColor = (didWin) ? 'lightgreen' : 'lightcoral';
+
+    //Set Message
+    setMessage(message, guessInput.style.borderColor);
 };
 
 //Listen for Guess
@@ -46,20 +60,14 @@ guessBtn.addEventListener('click', () => {
     //Validate
     if (!guessValue || isNaN(guessValue) || guessValue < min || guessValue > max) {
         setMessage(`Please enter a valid value between ${min} and ${max}`, 'red');
-        guessInput.textContent = '';
+        guessInput.value = '';
         return;
     }
 
     //Check if it's a winning guess
     if (guessValue === winningNum) {
         //Disable the input to show they have won!
-        guessInput.disabled = true;
-
-        //Set Border color green!
-        guessInput.style.borderColor = 'green';
-        guessInput.style.backgroundColor = 'lightgreen';
-
-        setMessage(`Congratulations !!! You have won! The right guess is ${winningNum}`, 'green');
+        gameOver(true, `Congratulations !!! You have won! The right guess is ${winningNum}`);
     } else {
         if (guessesLeft > 1) {
             guessesLeft--;
@@ -69,19 +77,10 @@ guessBtn.addEventListener('click', () => {
             guessInput.style.backgroundColor = 'lightcoral';
 
             console.log(`Pssstt... The right answer is ${winningNum}`);
-            guessInput.textContent = '';
-            setMessage(`Wrong Answer! You have ${guessesLeft} guesses left`, 'red');
+            guessInput.value = '';
+            setMessage(`${guessValue} is Wrong! You have ${guessesLeft} guesses left`, 'red');
         } else {
-            guessesLeft = 3;
-            guessInput.textContent = '';
-            guessInput.disabled = true;
-            guessBtn.disabled = true;
-            
-            //Set Border color red!
-            guessInput.style.borderColor = 'red';
-            guessInput.style.backgroundColor = 'lightcoral';
-
-            setMessage(`Sorry, you lost! Please play again!`, 'red');
+            gameOver(false, `Sorry, you lost! The correct answer was ${winningNum}`);
         }     
     }
 });
