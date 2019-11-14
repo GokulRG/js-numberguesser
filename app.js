@@ -10,18 +10,18 @@ Game Rules:
 //Game Values
 //Note that you don't have to include a semi-colon everytime when declaring a variable. If you're declaring multiple variables, you can simply use a comma and continue 
 //with your variable declarations
-let min = 1,
-    max = 10,
-    winningNum = Math.floor(Math.random()*(max-min+1)+min),
-    guessesLeft = 3;
+let min = 1;
+let max = 10;
+let winningNum = Math.floor(Math.random()*(max-min+1)+min);
+let guessesLeft = 3;
 
 //UI Elements
-const game = document.getElementById('game'),
-    minNum = document.querySelector('.min-num'),
-    maxNum = document.querySelector('.max-num'),
-    guessBtn = document.getElementById('guess-btn'),
-    guessInput = document.getElementById('guess-input'),
-    messageUI = document.querySelector('.message');
+const game = document.getElementById('game');
+const minNum = document.querySelector('.min-num');
+const maxNum = document.querySelector('.max-num');
+const guessBtn = document.getElementById('guess-btn');
+const guessInput = document.getElementById('guess-input');
+const messageUI = document.querySelector('.message');
 
 //Assign UI Min and Max Values based on the values stored here
 minNum.textContent = min;
